@@ -4,4 +4,4 @@ Repositorio con los proyectos de la asignatura Programación II.
 
 ## Proyectos
 
-- `EjercicioNetflix`: lectura de CSV, herencia, colecciones y mapas.
+- `EjercicioNetflix`: lectura de CSV, herencia, colecciones y mapas. Pruebas unitarias.
