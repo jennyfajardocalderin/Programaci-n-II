@@ -1,0 +1,19 @@
+DS I;Florida USA;ISS;20;3;2025;Falcon 9;SpaceX;67;22000;
+DS II;Florida USA;ISS;21;7;2025;Falcon 9;SpaceX;67;22000;
+DS III;Guayana Francesa;Luna;12;2;2026;Ariane 5;Arianespace;178;21000;
+DS IV;Houston USA;ISS;14;3;2026;Falcon 9;SpaceX;67;22000;
+DS V;Guayana Francesa;Luna;12;2;2027;Ariane 5;Arianespace;178;21000;
+ERROR
+DS VI;Baikonur;ISS;11;3;2027;Soyuz;Roscosmos;38;7020;
+DS VII;Guayana Francesa;ISS;25;3;2027;Falcon 9;SpaceX;67;22000;
+DS VIII;Guayana Francesa;ISS;14;2;2028;Soyuz;Arianespace;47;7020;
+DS IX;Houston USA;Luna;31;5;2029;Falcon 9;SpaceX;67;22000;
+DS X;Guayana Francesa;Marte;12;11;2029;Ariane 5;Arianespace;178;21000;
+ERROR
+DS XI;Florida USA;ISS;16;4;2030;Falcon 9;SpaceX;67;22000;
+DS XII;Baikonur;ISS;20;6;2030;Soyuz;Roscosmos;38;7020;
+DS XIII;Guayana Francesa;Marte;12;7;2030;Ariane 5;Arianespace;178;21000;
+DS XIV;Florida USA;Luna;11;4;2031;Falcon 9;SpaceX;67;22000;
+DS XV;Baikonur;ISS;7;7;2031;Soyuz;Roscosmos;38;7020;
+Incorrecta;Guayana Francesa;Marte;a;7;2030;Ariane 5;Arianespace;178;21000;
+Incorrecta;Guayana Francesa;Marte;1;7;2030;Ariane 5;Arianespace;a;21000;
