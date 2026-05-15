@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 
@@ -69,6 +70,38 @@ public class NetxflixProgramacion {
 			mapaPorPaises.get(prog.getPais()).add(prog);
 		}
 		return mapaPorPaises;
+	}
+	
+	public LinkedList<Programa> pilaProgramasAnno (int ano){
+		LinkedList<Programa> pila = new LinkedList<Programa>();
+		for(Programa pro: this.listaProgramas) {
+			if(pro.getAnno() == ano)
+				pila.addFirst(pro);
+		}
+		return pila;
+	}
+	
+	public int annoMasProgramas() {
+		// mapa: año y cantidad de programas por año
+		HashMap<Integer, Integer> mapaPorAnno = new HashMap<Integer, Integer>();
+		for (int i = 0; i < this.listaProgramas.size(); i++) {
+			if(!mapaPorAnno.containsKey(this.listaProgramas.get(i).getAnno()))
+				mapaPorAnno.put(this.listaProgramas.get(i).getAnno(), 0);
+			mapaPorAnno.put(this.listaProgramas.get(i).getAnno(), mapaPorAnno.get(this.listaProgramas.get(i).getAnno()) + 1);
+		}
+		
+		System.out.println(mapaPorAnno);
+		int anno = 0;
+		int mayor = 0;
+		for (HashMap.Entry<Integer, Integer> entry : mapaPorAnno.entrySet()) {
+			Integer annoM = entry.getKey();
+			Integer cantidadP = entry.getValue();
+			if(cantidadP > mayor) {
+				mayor = cantidadP;
+				anno = annoM;
+			}
+		}
+		return anno;
 	}
 	
 	

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 /** Clase que permite crear objetos naves
  */
-public class Nave implements Serializable {
+public class Nave implements Serializable, Subvencionable {
 	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private String proveedor;
@@ -44,6 +44,8 @@ public class Nave implements Serializable {
 
 	// TAREA 2B: getCoste
 	public double getCoste() {
+		if(this.esSubvencionable())
+			return coste - (coste*this.getPorcentaje()/100);
 		return coste;
 	}
 
@@ -79,6 +81,24 @@ public class Nave implements Serializable {
 			return false;
 		Nave other = (Nave) obj;
 		return Objects.equals(nombre, other.nombre) && Objects.equals(proveedor, other.proveedor);
+	}
+
+	@Override
+	public boolean esSubvencionable() {
+		// TODO Auto-generated method stub
+		boolean sub = false;
+		if(this.proveedor.equals("Arianespace"))
+			sub = true;
+		return sub;
+	}
+
+	@Override
+	public double getPorcentaje() {
+		// TODO Auto-generated method stub
+		if(esSubvencionable())
+			return 50;
+		else
+			return 0;
 	}
 
 	// TAREA 2A: Subvencionable

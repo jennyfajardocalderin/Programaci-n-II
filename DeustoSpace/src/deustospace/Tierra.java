@@ -28,7 +28,15 @@ public class Tierra extends Personal {
 	public String toString() {
 		return "Personal de tierra " + getNombre() + " (" + getPais() + " nivel " + nivel + ")";
 	}
-
+	
 	// TAREA 2B: getCoste
+
+	@Override
+	public double getCoste() {
+		// TODO Auto-generated method stub
+		return this.nivel*0.15;
+	}
+
+	
 
 }

@@ -59,4 +59,5 @@ public abstract class Personal implements Serializable {
 	}
 	
 	// TAREA 2B: getCoste
+	public abstract double getCoste();
 }

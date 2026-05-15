@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /** Clase que permite crear objetos astronautas
  */
-public class Astronauta extends Personal {
+public class Astronauta extends Personal implements Subvencionable{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Habilidad> habilidades;
 
@@ -37,7 +37,30 @@ public class Astronauta extends Personal {
 	}
 
 	// TAREA 2A: Subvencionable
-	
+	@Override
+	public boolean esSubvencionable() {
+		// TODO Auto-generated method stub
+		return (this.habilidades.contains(Habilidad.INVESTIGACION));
+	}
+
+	@Override
+	public double getPorcentaje() {
+		// TODO Auto-generated method stub
+		if(esSubvencionable())
+			return 90;
+		else return 0;
+	}
+
 	// TAREA 2B: getCoste
+	@Override
+	public double getCoste() {
+		// TODO Auto-generated method stub
+		double coste = this.habilidades.size()*0.25;
+		if(this.esSubvencionable())
+			coste = coste - (coste*getPorcentaje()/100);
+		return coste;
+	}
+
+	
 	
 }

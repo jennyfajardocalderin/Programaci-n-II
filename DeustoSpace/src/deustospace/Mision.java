@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /** Clase que permite crear objetos misiones espaciales
  */
-public class Mision implements Serializable {
+public class Mision implements Serializable, Comparable<Mision> {
 	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private String lugar;
@@ -89,7 +89,7 @@ public class Mision implements Serializable {
 	@Override
 	public String toString() {
 		return "Mision " + nombre + " a " + destino + " (" + fecha + ", nave: " + 
-				nave + ", personal: " + personal.size() + ")";
+				nave + ", personal: " + personal.size() + ", coste total: " + this.getCosteTotal() + ")";
 	}
 
 	@Override
@@ -112,9 +112,25 @@ public class Mision implements Serializable {
 	
 	// TAREA 2C: getCosteTotal
 	public double getCosteTotal() {
-		return 1.5 * personal.size();  // TODO Cambiar este código - programado de manera que pueda usarse para la tarea 3B aunque no se haya resuelto la 2C
+		double coste = 1.5;
+		if(this.nave != null) {
+			coste = coste + this.nave.getCoste();
+		}
+		for(Personal per : this.personal) {
+			coste = coste + per.getCoste();
+		}
+		return coste;  // TODO Cambiar este código - programado de manera que pueda usarse para la tarea 3B aunque no se haya resuelto la 2C
 	}
 
 	// TAREA 2D: ordenar en función de getCosteTotal
+	
+	@Override
+	public int compareTo(Mision o) {
+		// TODO Auto-generated method stub
+		//return (int) (this.getCosteTotal() - o.getCosteTotal()); // 80.37 - 80.20 = 0.17 ->	(int) 0.17 = 0
+		return Double.compare(this.getCosteTotal(), o.getCosteTotal());
+	}
+
+	
 	
 }

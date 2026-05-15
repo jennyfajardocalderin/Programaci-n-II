@@ -1,9 +1,17 @@
 package deustospace;
 
+import java.awt.image.AffineTransformOp;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Objects;
+import java.util.Scanner;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /** Clase de agencia espacial, contenedora de datos
  */
@@ -123,25 +131,174 @@ public class DeustoSpace implements Serializable {
 	// TAREA 1A: cargarMisionesCSV
 	public void cargarMisionesCSV() {
 		// TODO tarea 1a
+		File file = new File("misiones.csv");
+		try {
+			Scanner sc = new Scanner(file);
+			while(sc.hasNext()) {
+				String [] datos = sc.nextLine().split(";");
+				if(datos.length < 10) {
+					System.out.println("Faltan Datos");
+				} else {
+					boolean ok = true;
+					String nombreMision = datos[0];
+					String lugar = datos[1];
+					String destino = datos[2];
+					int anno = 0;
+					int mes = 0;
+					int dia = 0;
+					
+					String nombreNave = datos[6];
+					String proveedor = datos[7];
+					double costo = 0.0;
+					double carga = 0.0;
+					try {
+						dia = Integer.valueOf(datos[3]);
+						mes = Integer.valueOf(datos[4]);
+						anno = Integer.valueOf(datos[5]);
+						costo = Double.valueOf(datos[8]);
+						carga = Double.valueOf(datos[9]);
+					} catch (NumberFormatException e) {
+						// TODO: handle exception
+						System.out.println("Error: datos entero o real es eroneo");
+						ok = false;
+					}
+					if(ok) {
+						Nave nave = new Nave(nombreNave, proveedor, costo, carga);
+						Mision mision = new Mision(nombreMision, lugar, destino, anno, mes, dia);
+						mision.setNave(nave);
+						this.misiones.add(mision);
+					}
+				}
+			}
+			
+			sc.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	// TAREA 1B: cargarPersonalCSV
 	public void cargarPersonalCSV() {
 		// TODO tarea 1a
+		File file = new File("personal.csv");
+		try {
+			Scanner sc = new Scanner(file);
+			while(sc.hasNextLine()) {
+				String[] datos = sc.nextLine().split(";");
+				
+				String tipo = datos[0];
+				String nombre = datos[1];
+				String pais = datos[2];
+				Personal per;
+				if(tipo.equals("Astronauta")) {
+					ArrayList<Habilidad> habilidades = new ArrayList<Habilidad>();
+					String[] listaHab = datos[3].split(",");
+					for(String hb : listaHab) {
+						habilidades.add(Habilidad.valueOf(hb));
+					}
+					per = new Astronauta(nombre, pais, habilidades);
+				} else {
+					per = new Tierra(nombre, pais, Integer.valueOf(datos[3]));
+				}
+				this.personal.add(per);	
+			}
+			sc.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	// TAREA 1C: asignarPersonal
 	public void asignarPersonal() {
-		// TODO tarea 1a
+		// TODO tarea 1c
+		for(Mision mision : this.misiones) {
+			if(mision.getPersonal().size() == 0) {
+				ArrayList<Tierra> personalTierra = new ArrayList<Tierra>();
+				ArrayList<Astronauta> personalAstronauta = new ArrayList<Astronauta>();
+				for(Personal per : this.personal) {
+					if(per instanceof Astronauta)
+						personalAstronauta.add((Astronauta) per);
+					else personalTierra.add((Tierra) per);
+				}
+				Collections.shuffle(personalTierra);
+				for (int i = 0; i < 25; i++) {
+					mision.getPersonal().add(personalTierra.get(i));
+				}
+				
+				Collections.shuffle(personalAstronauta);
+				boolean pilotar = false;
+				int pos = 0;
+				while (pilotar == false && pos < personalAstronauta.size()) {
+					if(personalAstronauta.get(pos).getHabilidades().contains(Habilidad.PILOTAR))
+						pilotar = true;
+					else pos ++;
+				}
+				mision.getPersonal().add(personalAstronauta.get(pos));
+				int cant = 0;
+				while(cant < 2) {
+					Astronauta astronauta;
+					int ale = (int) (Math.random() * personalAstronauta.size());
+					if(!mision.getPersonal().contains(personalAstronauta.get(ale))) {
+						astronauta = personalAstronauta.get(ale);
+						mision.getPersonal().add(astronauta);
+						cant++;
+					}
+				}
+			}
+		}
 	}
 	
 	// TAREA 3A: costesPorPais
-	// public ... costesPorPais() {
+	public HashMap<String, Double> costesPorPais() {
+		HashMap<String, Double> mapaCostePais = new HashMap<String, Double>();
+		//coste de personal
+		for(Personal pe : this.personal) {
+			if(!mapaCostePais.containsKey(pe.getPais()))
+				mapaCostePais.put(pe.getPais(), 0.0);
+			mapaCostePais.put(pe.getPais(), mapaCostePais.get(pe.getPais()) + pe.getCoste());
+		}
+		//coste misiones
+		for(Mision mi : this.misiones) {
+			Nave nave = mi.getNave();
+			String pais = "";
+			if(nave != null) {
+				if(nave.getProveedor().equals("Arianespace"))
+					pais = "France";
+				else if(nave.getProveedor().equals("SpaceX"))
+					pais = "USA";
+				else if(nave.getProveedor().equals("Roscosmos"))
+					pais = "Russia";
+				if(!mapaCostePais.containsKey(pais))
+					mapaCostePais.put(pais, 0.0);
+				else mapaCostePais.put(pais, mapaCostePais.get(pais) + nave.getCoste());
+			}
+		}
+		return mapaCostePais;
+	}
 	// TODO tarea 3a
 
 	// TAREA 3B: destinosPorCoste
 	public void destinosPorCoste() {
 		// TODO tarea 3b
+		TreeMap<String, TreeSet<Mision>> mapa = new TreeMap<String, TreeSet<Mision>>();
+		for(Mision mi : this.misiones) {
+			if(!mapa.containsKey(mi.getDestino()))
+				mapa.put(mi.getDestino(), new TreeSet<Mision>());
+			mapa.get(mi.getDestino()).add(mi);
+		}
+		
+		for(String destino : mapa.keySet()) {
+			TreeSet<Mision> misionesDestino = mapa.get(destino);
+			System.out.println("Mision a: " + destino + " ....");
+			for(Mision mi: misionesDestino) {
+				System.out.println(mi);
+			}
+			
+		}
 	}
 
 }
