@@ -2,7 +2,7 @@ package citybike;
 
 import java.util.Objects;
 
-public class Bicicleta {
+public abstract class Bicicleta {
 	private static int contador = 1;
 	
 	private int numero;
@@ -68,4 +68,7 @@ public class Bicicleta {
 		return numero == other.numero;
 	}
 
+	public abstract String getCodigo();
+	public abstract boolean usable();
+	
 }

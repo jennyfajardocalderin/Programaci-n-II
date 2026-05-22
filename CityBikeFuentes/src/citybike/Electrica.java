@@ -1,6 +1,6 @@
 package citybike;
 
-public class Electrica extends Bicicleta {
+public class Electrica extends Bicicleta implements Recargable {
 	private double bateria;
 
 	public Electrica(boolean operativa, double bateria) {
@@ -24,6 +24,25 @@ public class Electrica extends Bicicleta {
 	@Override
 	public String toString() {
 		return "Electrica [" + this.getNumero() + ", bateria=" + bateria + "]";
+	}
+
+	@Override
+	public String getCodigo() {
+		// TODO Auto-generated method stub
+		return "E" + this.getNumero();
+	}
+
+	@Override
+	public boolean usable() {
+		// TODO Auto-generated method stub
+		if(this.isOperativa() && this.getBateria() > 80) return true;
+		return false;
+	}
+
+	@Override
+	public void recargar() {
+		// TODO Auto-generated method stub
+		this.bateria = 100;
 	}
 	
 }

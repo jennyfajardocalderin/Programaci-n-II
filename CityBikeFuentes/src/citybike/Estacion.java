@@ -3,7 +3,7 @@ package citybike;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class Estacion {
+public class Estacion  implements Recargable, Comparable<Estacion>{
 	private String nombre;
 	private int capacidad;
 	private LinkedList<Bicicleta> bicicletas;
@@ -73,6 +73,39 @@ public class Estacion {
 	@Override
 	public String toString() {
 		return "Estacion [nombre=" + nombre + ", capacidad=" + capacidad + ", bicicletas=" + bicicletas + "]";
+	}
+	
+	// 1B
+
+	@Override
+	public double getBateria() {
+		// TODO Auto-generated method stub
+		double promedio = 0.0;
+		int cantidad = 0;
+		for(Bicicleta bi : this.bicicletas) {
+			if(bi instanceof Electrica) {
+				promedio = promedio + ((Electrica) bi).getBateria();
+				cantidad++;
+			}
+		}
+		promedio = promedio / cantidad;
+		return promedio;
+	}
+
+	@Override
+	public void recargar() {
+		// TODO Auto-generated method stub
+		for(Bicicleta bi : this.bicicletas) {
+			if(bi instanceof Electrica)
+				((Electrica) bi).setBateria(100);
+		}
+	}
+
+	// 1C
+	@Override
+	public int compareTo(Estacion o) {
+		// TODO Auto-generated method stub
+		return this.nombre.compareToIgnoreCase(o.getNombre());
 	}
 
 	

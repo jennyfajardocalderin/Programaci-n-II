@@ -1,9 +1,11 @@
 package citybike;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Cliente {
+public class Cliente implements Serializable{
+	//private static final long serialVersionUID = 1L;
 	private String telefono;
 	private TipoCliente tipo;
 	private ArrayList<Reserva> reservas;
